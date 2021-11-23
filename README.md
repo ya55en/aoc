@@ -17,16 +17,16 @@ or (via HTTPS):
 ### Run the tests
 
 ```bash
- $ take test
+ $ rake test
 ```
 
 It is possible to run each day solutions' test suite like this:
 
 ```bash
- $ take test-day1
+ $ rake test-day1
 ```
 for the tests for Day 1, and for Day 2:
 
 ```bash
- $ take test-day2
+ $ rake test-day2
 ```
