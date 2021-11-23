@@ -1,3 +1,5 @@
+# .gitignore for aoc rpogramming chalanges project
+
 *.gem
 *.rbc
 /.config
@@ -21,8 +23,6 @@
 .repl_history
 build/
 *.bridgesupport
-build-iPhoneOS/
-build-iPhoneSimulator/
 
 ## Specific to RubyMotion (use of CocoaPods):
 #
@@ -54,3 +54,7 @@ build-iPhoneSimulator/
 
 # Used by RuboCop. Remote config files pulled in from inherit_from directive.
 # .rubocop-https?--*
+
+# backup files
+*~
+*.bak
