@@ -8,44 +8,50 @@ require 'ostruct'
 
 module ScanPasswds
 
+  extend self
+
   #: Return true if given passwd matches original shopkeeper's policies
-  #: constraints, false otherwise.
-  def ScanPasswds.match_constraints_orig?(min, max, char, passwd)
+  #: constraints, false otherwise. (See day2/problems.txt for details.)
+  def match_constraints_orig?(min, max, char, passwd)
     count = passwd.count char
     min <= count && count <= max
   end
 
-  #: Return true if given passwd matches Toboggan Corporate Policies constraints,
-  #: false otherwise.
-  def ScanPasswds.match_constraints_tcp?(fst_idx, sec_idx, char, passwd)
-    (passwd[fst_idx - 1] == char) ^ (passwd[sec_idx - 1] == char)
+  #: Return true if given passwd matches Toboggan Corporate Policies (TCP)
+  #: constraints, false otherwise. (Note that TCP policy authors count from 1.
+  #: See day2/problems.txt for details.)
+  def match_constraints_tcp?(first, second, char, passwd)
+    (passwd[first - 1] == char) ^ (passwd[second - 1] == char)
   end
 
   #: Return true if given passwd matches Toboggan Corporate Policies constraints,
   #: false otherwise.
-  def ScanPasswds.passwd_valid?(line, match_method_sym)
+  def passwd_valid?(line, policy)
     match_data = line.strip.match(/^(\d+)-(\d+)\s+(\w):\s+(.+)$/)
     raise "Line does NOT match format: [#{line.strip}]" unless match_data
     min_s, max_s, char, passwd = match_data.captures
     min, max = min_s.to_i, max_s.to_i
-    # print "min=#{min}, max=#{max}, char=#{char}, passwd=#{passwd}\n"
-    match_method = ScanPasswds.method(match_method_sym)
-    match_method.call min, max, char, passwd
+
+    case policy
+    when :orig then ScanPasswds.match_constraints_orig? min, max, char, passwd
+    when :tcp then ScanPasswds.match_constraints_tcp? min, max, char, passwd
+    else raise "UNREACHABLE: #{__LINE__} - policy_sym=#{policy.inspect}"
+    end
   end
 
   #: Return the number of valid password entries in `input_file` using a match
   #: policy defined by a method with symbol `match_method_sym`.
-  def ScanPasswds.count_valid_passwords(input_file, match_method_sym)
+  def count_valid_passwords(input_file, policy)
     count = 0
     file_obj = input_file.respond_to?(:read) ? input_file : File.open(input_file)
     file_obj.each_line do |line|
       next if line =~ /^\s*$/
-      count += 1 if passwd_valid?(line, match_method_sym)
+      count += 1 if passwd_valid?(line, policy)
     end
     count
   end
 
-  def ScanPasswds.parse(argv)
+  def parse(argv)
     # The options specified on the command line will be collected in *options*.
     # We set default values here.
     options = OpenStruct.new
@@ -70,17 +76,17 @@ module ScanPasswds
     end
 
     opt_parser.parse!(argv)
-    abort('Missing INPUT_FILE. (Try "--help" for usage details.)') if argv.empty?
-    abort('Too many INPUT_FILE args. (Try "--help" for usage details.)') if argv.size > 1
+    try_help_msg = 'Try "--help" for usage details.'
+    abort("Missing INPUT_FILE. (#{try_help_msg})") if argv.empty?
+    abort("Too many INPUT_FILE args. (#{try_help_msg})") if argv.size > 1
     options
   end
 
-  def ScanPasswds.main(argv)
-    argv = argv.dup  # avoid side effects via ARGV
+  def main(argv)
+    argv = argv.dup # avoid side effects via ARGV
     begin
-      options = ScanPasswds.parse(argv)
-      meth_name = "match_constraints_#{options.policy}?"
-      result = ScanPasswds.count_valid_passwords argv[0], meth_name.to_sym
+      options = parse(argv)
+      result = count_valid_passwords argv[0], options.policy
       print "Total valid passwds: #{result}\n"
 
     rescue StandardError => err
@@ -92,4 +98,6 @@ module ScanPasswds
 
 end
 
-exit(ScanPasswds.main ARGV) if __FILE__ == $0
+if __FILE__ == $0
+  exit(ScanPasswds.main ARGV)
+end

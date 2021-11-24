@@ -95,7 +95,9 @@ module ExpenseReportFix
       result_ary = case options.cardinality
                    when :pairs then ExpenseReportFix.find_matching_pair input_ary
                    when :triads then ExpenseReportFix.find_matching_triad input_ary
-                   else raise "UNREACHABLE: #{__LINE__}"
+                   else
+                     debug_info = "options.cardinality=#{options.cardinality.inspect}"
+                     raise "UNREACHABLE: #{__LINE__} - #{debug_info}"
                    end
 
       answer = result_ary.reduce(1, :*)

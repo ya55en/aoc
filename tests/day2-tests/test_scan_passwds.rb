@@ -45,13 +45,13 @@ module TestScanPasswdsWrapper
   class TestPasswdValidForOrigPolicy < Test::Unit::TestCase
 
     def test_positive_cases
-      assert_true ScanPasswds.passwd_valid? '1-3 a: abcde', :match_constraints_orig?
-      assert_true ScanPasswds.passwd_valid? '2-9 c: ccccccccc', :match_constraints_orig?
+      assert_true ScanPasswds.passwd_valid? '1-3 a: abcde', :orig
+      assert_true ScanPasswds.passwd_valid? '2-9 c: ccccccccc', :orig
     end
 
     def test_negative_cases
-      assert_false ScanPasswds.passwd_valid? '1-3 b: cdefg', :match_constraints_orig?
-      assert_false ScanPasswds.passwd_valid? '8-9 c: c1c2c3c4c5c6c', :match_constraints_orig?
+      assert_false ScanPasswds.passwd_valid? '1-3 b: cdefg', :orig
+      assert_false ScanPasswds.passwd_valid? '8-9 c: c1c2c3c4c5c6c', :orig
     end
   end
 
@@ -59,13 +59,13 @@ module TestScanPasswdsWrapper
   class TestPasswdValidForTcpPolicy < Test::Unit::TestCase
 
     def test_positive_cases
-      assert_true ScanPasswds.passwd_valid? '1-3 a: abcde', :match_constraints_tcp?
-      assert_true ScanPasswds.passwd_valid? '8-9 c: c1c2c3c4c5c6c', :match_constraints_tcp?
+      assert_true ScanPasswds.passwd_valid? '1-3 a: abcde', :tcp
+      assert_true ScanPasswds.passwd_valid? '8-9 c: c1c2c3c4c5c6c', :tcp
     end
 
     def test_negative_cases
-      assert_false ScanPasswds.passwd_valid? '1-3 b: cdefg', :match_constraints_tcp?
-      assert_false ScanPasswds.passwd_valid? '2-9 c: ccccccccc', :match_constraints_tcp?
+      assert_false ScanPasswds.passwd_valid? '1-3 b: cdefg', :tcp
+      assert_false ScanPasswds.passwd_valid? '2-9 c: ccccccccc', :tcp
     end
   end
 
@@ -75,7 +75,7 @@ module TestScanPasswdsWrapper
     def test_count_valid_passwords
       ref_input = File.read(REF_INPUT_FILE)
       fake_io = StringIO.new(ref_input)
-      assert_equal 2, ScanPasswds.count_valid_passwords(fake_io, :match_constraints_orig?)
+      assert_equal 2, ScanPasswds.count_valid_passwords(fake_io, :orig)
     end
   end
 
@@ -85,7 +85,7 @@ module TestScanPasswdsWrapper
     def test_count_valid_passwords
       ref_input = File.read(REF_INPUT_FILE)
       fake_io = StringIO.new(ref_input)
-      assert_equal 1, ScanPasswds.count_valid_passwords(fake_io, :match_constraints_tcp?)
+      assert_equal 1, ScanPasswds.count_valid_passwords(fake_io, :tcp)
     end
   end
 
