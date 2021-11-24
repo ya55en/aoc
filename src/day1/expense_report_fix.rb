@@ -7,29 +7,54 @@ require 'optparse'
 require 'ostruct'
 
 require_relative '../utils'
-require_relative './array_ext'
 
 module ExpenseReportFix
 
-  def ExpenseReportFix.scan_pairs(amounts, expected_sum = 2020)
-    amounts.scan_pairs do |i, j|
+  extend self
+
+  #: Generate and yield all possible pair combinations of non-repeating
+  #: indices i, j for this array.
+  def scan_pair_combinations(size)
+    0.upto(size - 1) do |i|
+      (i + 1).upto(size - 1) do |j|
+        yield i, j
+      end
+    end
+  end
+
+  #: Generate and yield all possible triad combinations of non-repeating
+  #: indices i, j, k for this array.
+  def scan_triad_combinations(size)
+    scan_pair_combinations(size) do |i, j|
+      (j + 1).upto(size - 1) do |k|
+        yield i, j, k
+      end
+    end
+  end
+
+  #: Return a pair of elements out of given array matching predefined
+  #: conditions.
+  def find_matching_pair(amounts, expected_sum = 2020)
+    scan_pair_combinations(amounts.size) do |i, j|
       if amounts[i] + amounts[j] == expected_sum
-        return amounts[i] * amounts[j]
+        return amounts[i], amounts[j]
       end
     end
     nil
   end
 
-  def ExpenseReportFix.scan_triads(amounts, expected_sum = 2020)
-    amounts.scan_triads do |i, j, k|
+  #: Return a triad of elements out of given array matching predefined
+  #: conditions.
+  def find_matching_triad(amounts, expected_sum = 2020)
+    scan_triad_combinations(amounts.size) do |i, j, k|
       if amounts[i] + amounts[j] + amounts[k] == expected_sum
-        return amounts[i] * amounts[j] * amounts[k]
+        return amounts[i], amounts[j], amounts[k]
       end
     end
     nil
   end
 
-  def ExpenseReportFix.parse(argv)
+  def parse(argv)
     # The options specified on the command line will be collected in *options*.
     # We set default values here.
     options = OpenStruct.new
@@ -62,12 +87,18 @@ module ExpenseReportFix
     options
   end
 
-  def ExpenseReportFix.main(argv)
+  def main(argv)
     argv = argv.dup # avoid side effects via ARGV
     begin
       options = ExpenseReportFix.parse(argv)
-      meth = ExpenseReportFix.method("scan_#{options.cardinality}".to_sym)
-      answer = meth.call AocUtils.file_to_array(argv[0])
+      input_ary = AocUtils.file_to_array(argv[0])
+      result_ary = case options.cardinality
+                   when :pairs then ExpenseReportFix.find_matching_pair input_ary
+                   when :triads then ExpenseReportFix.find_matching_triad input_ary
+                   else raise "UNREACHABLE: #{__LINE__}"
+                   end
+
+      answer = result_ary.reduce(1, :*)
       print "Scan result for #{options.cardinality}, multiplied: #{answer}\n"
 
     rescue StandardError => err
