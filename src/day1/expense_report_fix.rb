@@ -9,9 +9,9 @@ require 'ostruct'
 require_relative '../utils'
 require_relative './array_ext'
 
-module ExpenseReports
+module ExpenseReportFix
 
-  def ExpenseReports.fix_pairs(amounts, expected_sum = 2020)
+  def ExpenseReportFix.scan_pairs(amounts, expected_sum = 2020)
     amounts.scan_pairs do |i, j|
       if amounts[i] + amounts[j] == expected_sum
         return amounts[i] * amounts[j]
@@ -20,7 +20,7 @@ module ExpenseReports
     nil
   end
 
-  def ExpenseReports.fix_triads(amounts, expected_sum = 2020)
+  def ExpenseReportFix.scan_triads(amounts, expected_sum = 2020)
     amounts.scan_triads do |i, j, k|
       if amounts[i] + amounts[j] + amounts[k] == expected_sum
         return amounts[i] * amounts[j] * amounts[k]
@@ -29,7 +29,7 @@ module ExpenseReports
     nil
   end
 
-  def ExpenseReports.parse(argv)
+  def ExpenseReportFix.parse(argv)
     # The options specified on the command line will be collected in *options*.
     # We set default values here.
     options = OpenStruct.new
@@ -62,11 +62,11 @@ module ExpenseReports
     options
   end
 
-  def ExpenseReports.main(argv)
-    argv = argv.dup  # avoid side effects via ARGV
+  def ExpenseReportFix.main(argv)
+    argv = argv.dup # avoid side effects via ARGV
     begin
-      options = ExpenseReports.parse(argv)
-      meth = ExpenseReports.method("fix_#{options.cardinality}".to_sym)
+      options = ExpenseReportFix.parse(argv)
+      meth = ExpenseReportFix.method("scan_#{options.cardinality}".to_sym)
       answer = meth.call AocUtils.file_to_array(argv[0])
       print "Scan result for #{options.cardinality}, multiplied: #{answer}\n"
 
@@ -76,7 +76,8 @@ module ExpenseReports
     end
     0
   end
-
 end
 
-exit(ExpenseReports.main ARGV) if __FILE__ == $0
+if __FILE__ == $0
+  exit(ExpenseReportFix.main ARGV)
+end

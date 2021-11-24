@@ -17,34 +17,34 @@ module TestExpenseReportWrapper
   class TestExpenseFixesDay1 < Test::Unit::TestCase
 
     test "day1 - reference input" do
-      assert_equal 514579, ExpenseReports.fix_pairs(REFERENCE_INPUT)
+      assert_equal 514579, ExpenseReportFix.scan_pairs(REFERENCE_INPUT)
     end
 
     test "day1 - no solution input" do
       input = [10, 11, 12, 13, 14]
-      assert_nil ExpenseReports.fix_pairs(input)
+      assert_nil ExpenseReportFix.scan_pairs(input)
     end
 
     test "day1 problem input" do
       # print "Answer: [#{ExpenseReports.fix_pairs TRUE_INPUT}]\n"
-      assert_equal 1006176, ExpenseReports.fix_pairs(PUZZLE_INPUT)
+      assert_equal 1006176, ExpenseReportFix.scan_pairs(PUZZLE_INPUT)
     end
   end
 
   class TestExpenseFixesDay2 < Test::Unit::TestCase
 
     test "triads - reference test data" do
-      assert_equal 241861950, ExpenseReports.fix_triads(REFERENCE_INPUT)
+      assert_equal 241861950, ExpenseReportFix.scan_triads(REFERENCE_INPUT)
     end
 
     test "triads - no solution input" do
       input = [10, 11, 12, 13, 14]
-      assert_nil ExpenseReports.fix_triads(input)
+      assert_nil ExpenseReportFix.scan_triads(input)
     end
 
     test "triads - problem input" do
       # print "Answer: [#{ExpenseReports.fix_triads TRUE_INPUT}]\n"
-      assert_equal 199132160, ExpenseReports.fix_triads(PUZZLE_INPUT)
+      assert_equal 199132160, ExpenseReportFix.scan_triads(PUZZLE_INPUT)
     end
   end
 
@@ -54,7 +54,7 @@ module TestExpenseReportWrapper
     def test_cardinality_pairs
       res = nil
       output = TestHelpers.with_captured_stdout do
-        res = ExpenseReports.main [REF_INPUT_FILE]
+        res = ExpenseReportFix.main [REF_INPUT_FILE]
       end
       assert_equal 0, res
       assert_equal 'Scan result for pairs, multiplied: 514579', output.strip
@@ -63,7 +63,7 @@ module TestExpenseReportWrapper
     def test_cardinality_triads
       res = nil
       output = TestHelpers.with_captured_stdout do
-        res = ExpenseReports.main ['-c', 'triads', REF_INPUT_FILE]
+        res = ExpenseReportFix.main ['-c', 'triads', REF_INPUT_FILE]
       end
       assert_equal 0, res
       assert_equal 'Scan result for triads, multiplied: 241861950', output.strip

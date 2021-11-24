@@ -2,8 +2,8 @@
 
 class Array
 
-  #: Generate and yield all possible pairs of non-repeating indices i, j
-  #: for this array.
+  #: Generate and yield all possible pair combinations of non-repeating
+  #: indices i, j for this array.
   def scan_pairs
     0.upto(size - 1) do |i|
       (i + 1).upto(size - 1) do |j|
@@ -12,8 +12,8 @@ class Array
     end
   end
 
-  #: Generate and yield all possible triads of non-repeating indices i, j, k
-  #: for this array.
+  #: Generate and yield all possible triad combinations of non-repeating
+  #: indices i, j, k for this array.
   def scan_triads
     scan_pairs do |i, j|
       (j + 1).upto(size - 1) do |k|
