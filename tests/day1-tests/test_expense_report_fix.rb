@@ -11,8 +11,8 @@ module TestExpenseReportWrapper
   REF_INPUT_FILE = MY_DIR + '/ref-input-day1.txt'
   PUZZLE_INPUT_FILE = SRC_DIR + 'day1/puzzle-input-day1.txt'
 
-  REFERENCE_INPUT = AocUtils.file_to_array(REF_INPUT_FILE)
-  PUZZLE_INPUT = AocUtils.file_to_array(PUZZLE_INPUT_FILE)
+  REFERENCE_INPUT = AocUtils.to_int_array(REF_INPUT_FILE)
+  PUZZLE_INPUT = AocUtils.to_int_array(PUZZLE_INPUT_FILE)
 
   class TestArrayExtentions < Test::Unit::TestCase
 
