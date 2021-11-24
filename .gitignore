@@ -58,3 +58,8 @@ build/
 # backup files
 *~
 *.bak
+
+# IDEs
+.idea/
+.vscode/
+
