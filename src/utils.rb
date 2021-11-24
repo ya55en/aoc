@@ -2,14 +2,12 @@
 
 module AocUtils
 
-  def AocUtils.file_to_array(filename)
-    res = []
+  extend self
+
+  def to_int_array(filename)
     File.open(filename) do |f|
-      f.each_line do |line|
-        res << line.strip.to_i
-      end
+      f.each_line.map { |l| l.strip.to_i }
     end
-    res
   end
 
 end

@@ -91,7 +91,7 @@ module ExpenseReportFix
     argv = argv.dup # avoid side effects via ARGV
     begin
       options = ExpenseReportFix.parse(argv)
-      input_ary = AocUtils.file_to_array(argv[0])
+      input_ary = AocUtils.to_int_array(argv[0])
       result_ary = case options.cardinality
                    when :pairs then ExpenseReportFix.find_matching_pair input_ary
                    when :triads then ExpenseReportFix.find_matching_triad input_ary
