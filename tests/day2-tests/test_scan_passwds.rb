@@ -1,7 +1,6 @@
 #: Unit tests for scan_psswds (day-2 part 1 solution).
 
 require 'test/unit'
-require 'stringio'
 
 require_relative '../common'
 require_relative SRC_DIR + 'day2/scan_passwds'
@@ -69,23 +68,15 @@ module TestScanPasswdsWrapper
     end
   end
 
-  #: Test count_valid_passwords method for the orig policy
-  class TestCountValidPsswdsForOrigPolicy < Test::Unit::TestCase
+  #: Test count_valid_passwords method
+  class TestCountValidPsswds < Test::Unit::TestCase
 
-    def test_count_valid_passwords
-      ref_input = File.read(REF_INPUT_FILE)
-      fake_io = StringIO.new(ref_input)
-      assert_equal 2, ScanPasswds.count_valid_passwords(fake_io, :orig)
+    def test_orig_policy__ref_input
+      assert_equal 2, ScanPasswds.count_valid_passwords(REF_INPUT_FILE, :orig)
     end
-  end
 
-  #: Test count_valid_passwords method for the tcp policy
-  class TestCountValidPsswdsForTcpPolicy < Test::Unit::TestCase
-
-    def test_count_valid_passwords
-      ref_input = File.read(REF_INPUT_FILE)
-      fake_io = StringIO.new(ref_input)
-      assert_equal 1, ScanPasswds.count_valid_passwords(fake_io, :tcp)
+    def test_tcp_policy__ref_input
+      assert_equal 1, ScanPasswds.count_valid_passwords(REF_INPUT_FILE, :tcp)
     end
   end
 

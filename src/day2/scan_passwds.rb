@@ -27,6 +27,7 @@ module ScanPasswds
   #: Return true if given passwd matches Toboggan Corporate Policies constraints,
   #: false otherwise.
   def passwd_valid?(line, policy)
+    return false if line =~ /^\s*$/
     match_data = line.strip.match(/^(\d+)-(\d+)\s+(\w):\s+(.+)$/)
     raise "Line does NOT match format: [#{line.strip}]" unless match_data
     min_s, max_s, char, passwd = match_data.captures
@@ -42,13 +43,9 @@ module ScanPasswds
   #: Return the number of valid password entries in `input_file` using a match
   #: policy defined by a method with symbol `match_method_sym`.
   def count_valid_passwords(input_file, policy)
-    count = 0
-    file_obj = input_file.respond_to?(:read) ? input_file : File.open(input_file)
-    file_obj.each_line do |line|
-      next if line =~ /^\s*$/
-      count += 1 if passwd_valid?(line, policy)
+    File.open(input_file) do |f|
+      f.inject(0) { |count, l| count += passwd_valid?(l, policy) ? 1 : 0 }
     end
-    count
   end
 
   def parse(argv)
