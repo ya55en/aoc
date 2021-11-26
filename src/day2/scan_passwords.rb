@@ -6,36 +6,36 @@
 require 'optparse'
 require 'ostruct'
 
-module ScanPasswds
+module ScanPasswords
 
   extend self
 
-  #: Return true if given passwd matches original shopkeeper's policies
+  #: Return true if given password matches original shopkeeper's policies
   #: constraints, false otherwise. (See day2/problems.txt for details.)
-  def match_constraints_orig?(min, max, char, passwd)
-    count = passwd.count char
+  def match_constraints_orig?(min, max, char, password)
+    count = password.count char
     min <= count && count <= max
   end
 
-  #: Return true if given passwd matches Toboggan Corporate Policies (TCP)
+  #: Return true if given password matches Toboggan Corporate Policies (TCP)
   #: constraints, false otherwise. (Note that TCP policy authors count from 1.
   #: See day2/problems.txt for details.)
-  def match_constraints_tcp?(first, second, char, passwd)
-    (passwd[first - 1] == char) ^ (passwd[second - 1] == char)
+  def match_constraints_tcp?(first, second, char, password)
+    (password[first - 1] == char) ^ (password[second - 1] == char)
   end
 
-  #: Return true if given passwd matches Toboggan Corporate Policies constraints,
+  #: Return true if given password matches Toboggan Corporate Policies constraints,
   #: false otherwise.
-  def passwd_valid?(line, policy)
+  def password_valid?(line, policy)
     return false if line =~ /^\s*$/
     match_data = line.strip.match(/^(\d+)-(\d+)\s+(\w):\s+(.+)$/)
     raise "Line does NOT match format: [#{line.strip}]" unless match_data
-    min_s, max_s, char, passwd = match_data.captures
+    min_s, max_s, char, password = match_data.captures
     min, max = min_s.to_i, max_s.to_i
 
     case policy
-    when :orig then ScanPasswds.match_constraints_orig? min, max, char, passwd
-    when :tcp then ScanPasswds.match_constraints_tcp? min, max, char, passwd
+    when :orig then ScanPasswords.match_constraints_orig? min, max, char, password
+    when :tcp then ScanPasswords.match_constraints_tcp? min, max, char, password
     else raise "UNREACHABLE: #{__LINE__} - policy_sym=#{policy.inspect}"
     end
   end
@@ -44,7 +44,7 @@ module ScanPasswds
   #: policy defined by a method with symbol `match_method_sym`.
   def count_valid_passwords(input_file, policy)
     File.open(input_file) do |f|
-      f.inject(0) { |count, l| count += passwd_valid?(l, policy) ? 1 : 0 }
+      f.inject(0) { |count, l| count += password_valid?(l, policy) ? 1 : 0 }
     end
   end
 
@@ -84,7 +84,7 @@ module ScanPasswds
     begin
       options = parse(argv)
       result = count_valid_passwords argv[0], options.policy
-      print "Total valid passwds: #{result}\n"
+      print "Total valid passwords: #{result}\n"
 
     rescue StandardError => err
       print "UNEXPECTED: #{err.class}: #{err.to_s}\n"
@@ -96,5 +96,5 @@ module ScanPasswds
 end
 
 if __FILE__ == $0
-  exit(ScanPasswds.main ARGV)
+  exit(ScanPasswords.main ARGV)
 end
