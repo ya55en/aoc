@@ -16,40 +16,59 @@ module TestExpenseReportWrapper
 
   class TestArrayExtentions < Test::Unit::TestCase
 
+    def test_scan_pairs__size_2
+      assert_equal [[0, 1]], ExpenseReportFix.scan_pair_combinations(2).to_a
+    end
+
     def test_scan_pairs__size_3
-      res = []
-      ExpenseReportFix.scan_pair_combinations(3) { |i, j| res << [i, j] }
-      assert_equal [[0, 1], [0, 2], [1, 2]], res
+      expected = [[0, 1], [0, 2], [1, 2]]
+      assert_equal expected, ExpenseReportFix.scan_pair_combinations(3).to_a
+    end
+
+    def test_scan_pairs__size_4
+      expected = [[0, 1], [0, 2], [0, 3], [1, 2], [1, 3], [2, 3]]
+      assert_equal expected, ExpenseReportFix.scan_pair_combinations(4).to_a
+    end
+
+    def test_scan_pairs__size_5
+      assert_equal 10, ExpenseReportFix.scan_pair_combinations(5).to_a.size
+    end
+
+    def test_scan_pairs__size_6
+      assert_equal 15, ExpenseReportFix.scan_pair_combinations(6).to_a.size
+    end
+
+    def test_scan_pairs__size_9
+      assert_equal 36, ExpenseReportFix.scan_pair_combinations(9).to_a.size
     end
 
     def test_scan_pairs__size_0
-      res = []
-      ExpenseReportFix.scan_pair_combinations(0) { |i, j| res << [i, j] }
-      assert_equal [], res
+      assert_equal [], ExpenseReportFix.scan_pair_combinations(0).to_a
     end
 
     def test_scan_pairs__size_1
-      res = []
-      ExpenseReportFix.scan_pair_combinations(1) { |i, j| res << [i, j] }
-      assert_equal [], res
+      assert_equal [], ExpenseReportFix.scan_pair_combinations(1).to_a
     end
 
     def test_scan_triads__size_4
-      res = []
-      ExpenseReportFix.scan_triad_combinations(4) { |i, j, k| res << [i, j, k] }
-      assert_equal [[0, 1, 2], [0, 1, 3], [0, 2, 3], [1, 2, 3]], res
+      expected = [[0, 1, 2], [0, 1, 3], [0, 2, 3], [1, 2, 3]]
+      assert_equal expected, ExpenseReportFix.scan_triad_combinations(4).to_a
     end
 
     def test_scan_triads__size_5
-      res = []
-      ExpenseReportFix.scan_triad_combinations(5) { |i, j, k| res << [i, j, k] }
-      assert_equal 10, res.size
+      assert_equal 10, ExpenseReportFix.scan_triad_combinations(5).to_a.size
+    end
+
+    def test_scan_triads__size_6
+      assert_equal 20, ExpenseReportFix.scan_triad_combinations(6).to_a.size
+    end
+
+    def test_scan_triads__size_9
+      assert_equal 84, ExpenseReportFix.scan_triad_combinations(9).to_a.size
     end
 
     def test_scan_triads__size_0
-      res = []
-      ExpenseReportFix.scan_pair_combinations(0) { |i, j| res << [i, j] }
-      assert_equal [], res
+      assert_equal [], ExpenseReportFix.scan_pair_combinations(0).to_a
     end
 
   end
