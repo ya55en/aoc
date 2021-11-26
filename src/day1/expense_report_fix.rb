@@ -15,6 +15,8 @@ module ExpenseReportFix
   #: Generate and yield all possible pair combinations of non-repeating
   #: indices i, j for this array.
   def scan_pair_combinations(size)
+    return enum_for(__method__, size) unless block_given?
+
     0.upto(size - 1) do |i|
       (i + 1).upto(size - 1) do |j|
         yield i, j
@@ -25,6 +27,8 @@ module ExpenseReportFix
   #: Generate and yield all possible triad combinations of non-repeating
   #: indices i, j, k for this array.
   def scan_triad_combinations(size)
+    return enum_for(__method__, size) unless block_given?
+
     scan_pair_combinations(size) do |i, j|
       (j + 1).upto(size - 1) do |k|
         yield i, j, k
