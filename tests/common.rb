@@ -3,7 +3,7 @@
 require 'pathname'
 require 'stringio'
 
-SRC_DIR = Pathname.new(File.expand_path(File.dirname(__FILE__)) + '/../src/').cleanpath
+SRC_DIR = Pathname.new(File.expand_path(File.dirname(__FILE__)) + '/../src/').cleanpath.to_s
 
 module TestHelpers
 

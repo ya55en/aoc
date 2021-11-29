@@ -2,7 +2,7 @@
 
 require 'test/unit'
 require_relative './common'
-require_relative SRC_DIR + 'utils'
+require_relative SRC_DIR + '/utils'
 
 class TestUtils < Test::Unit::TestCase
 
