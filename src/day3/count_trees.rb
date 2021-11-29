@@ -1,38 +1,43 @@
+#! /usr/bin/env ruby
 #: Count trees on the way down with a toboggan
 
 def read_map(filename)
   hsize = (File.open(filename) { |f| next f.readline }).rstrip.size
-  res = Array.new(hsize) { Array.new }
+  res = Array.new(hsize)
   File.open(filename) do |f|
     f.each_line.each_with_index do |l, row|
-      l.rstrip.each_char.each_with_index do |c, col|
-        print "[#{c}]"
-        res[col][row] = c == '#' ? 1 : 0
-      end
-      print "\n"
+      res[row] = l.rstrip.each_char.map { |c| c == '#' ? 1 : 0 }
     end
   end
-  print "hsize=#{res.size}, vsize=#{res[0].size}\n"
   res
 end
 
-def count_trees(woods_map, h_step, v_step, h_start = 0, v_start = 0)
-  h = h_start
+def count_trees(woods_map, v_step, h_step, v_start = 0, h_start = 0)
   v = v_start
-  h_size = woods_map.size
-  v_size = woods_map[0].size
+  h = h_start
+  v_size = woods_map.size
+  h_size = woods_map[0].size
   count = 0
   while true
-    print "h=#{h}, v=#{v}, count=#{count}\n"
-    h = (h + h_step) % h_size
     v = v + v_step
     return count if v > v_size - 1
-    count += woods_map[h][v]
+    h = (h + h_step) % h_size
+    count += woods_map[v][h] # row first, then column
   end
 end
 
-def main argv
-  woods_map = read_map('./input-day3.txt')
+def main(argv)
+  filename = argv[0] || './input-day3.txt'
+  woods_map = read_map(filename)
+  trees_counts = [
+    count_trees(woods_map, 1, 1),
+    count_trees(woods_map, 1, 3),
+    count_trees(woods_map, 1, 5),
+    count_trees(woods_map, 1, 7),
+    count_trees(woods_map, 2, 1),
+  ]
+  print "Trees encountered: #{trees_counts}\n"
+  print "Multiplied: #{trees_counts.reduce(1, :*)}\n"
   0
 end
 
