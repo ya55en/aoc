@@ -6,7 +6,7 @@
 require 'optparse'
 require 'ostruct'
 
-require_relative '../utils'
+require_relative '../../utils'
 
 module ExpenseReportFix
 

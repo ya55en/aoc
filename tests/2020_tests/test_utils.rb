@@ -1,7 +1,7 @@
 #: Unit tests for the utils module.
 
 require 'test/unit'
-require_relative './common'
+require_relative '../common'
 require_relative SRC_DIR + '/utils'
 
 class TestUtils < Test::Unit::TestCase

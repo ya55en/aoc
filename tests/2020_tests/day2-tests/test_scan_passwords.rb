@@ -2,15 +2,15 @@
 
 require 'test/unit'
 
-require_relative '../common'
-require_relative SRC_DIR + '/day2/scan_passwords'
+require_relative '../../common'
+require_relative SRC_DIR + '/2020/day2/scan_passwords'
 
 # Need to isolate in a module to avoid constants' name collisions/side effects
 module TestScanPasswordsWrapper
 
   MY_DIR = File.expand_path File.dirname(__FILE__)
   REF_INPUT_FILE = MY_DIR + '/ref-input-day2.txt'
-  PUZZLE_INPUT_FILE = SRC_DIR + '/day2/puzzle-input-day2.txt'
+  PUZZLE_INPUT_FILE = SRC_DIR + '/2020/day2/puzzle-input-day2.txt'
 
   #: Test match_constraints_xxx? methods
   class TestMatchConstraints < Test::Unit::TestCase

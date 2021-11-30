@@ -14,19 +14,19 @@ or (via HTTPS):
  $ git clone https://github.com/ya55en/aoc.git
 ```
 
-### Run the tests
+### Run the 2020 tests
 
 ```bash
- $ rake test
+ $ rake test-2020
 ```
 
 It is possible to run each day solutions' test suite like this:
 
 ```bash
- $ rake test-day1
+ $ rake test-2020-day1
 ```
 for the tests for Day 1, and for Day 2:
 
 ```bash
- $ rake test-day2
+ $ rake test-2020-day2
 ```

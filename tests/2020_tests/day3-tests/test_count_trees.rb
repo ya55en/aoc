@@ -1,6 +1,6 @@
 require 'test/unit'
-require_relative '../common'
-require_relative SRC_DIR + '/day3/count_trees'
+require_relative '../../common'
+require_relative SRC_DIR + '/2020/day3/count_trees'
 
 class TestCountTrees < Test::Unit::TestCase
 
@@ -11,7 +11,7 @@ class TestCountTrees < Test::Unit::TestCase
   end
 
   def test_read_map__problem_input
-    trees_map = read_map(SRC_DIR + '/day3/input-day3.txt')
+    trees_map = read_map(SRC_DIR + '/2020/day3/input-day3.txt')
     assert_equal 323, trees_map.size
     assert_equal 31, trees_map[0].size
   end
@@ -26,7 +26,7 @@ class TestCountTrees < Test::Unit::TestCase
   end
 
   def test_count_trees__problem_input
-    filename = (SRC_DIR + '/day3/input-day3.txt')
+    filename = (SRC_DIR + '/2020/day3/input-day3.txt')
     trees_map = read_map(filename)
     assert_equal 100, count_trees(trees_map, 1, 1)
     assert_equal 276, count_trees(trees_map, 1, 3)
