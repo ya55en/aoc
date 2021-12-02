@@ -9,6 +9,6 @@ from util import chunks
 
 print(reduce(
     lambda c, a: c + int(a[1] > a[0]),
-    chunks((sum(e) for e in chunks((int(l) for l in sys.stdin), 3)), 2),
+    chunks(map(sum, chunks(map(int, sys.stdin), 3)), 2),
     0,
 ))
