@@ -63,3 +63,5 @@ build/
 .idea/
 .vscode/
 
+# Python-related
+*.py[co]
